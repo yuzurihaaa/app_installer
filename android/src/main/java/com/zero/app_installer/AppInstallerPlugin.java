@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -99,7 +101,7 @@ public class AppInstallerPlugin implements FlutterPlugin, ActivityAware, MethodC
     }
 
     @Override
-    public void onMethodCall(MethodCall call,@NonNull Result result) {
+    public void onMethodCall(MethodCall call, @NonNull Result result) {
         String method = call.method;
         if (method.equals("goStore")) {
             String appId = (String) call.argument("androidAppId");
@@ -107,8 +109,12 @@ public class AppInstallerPlugin implements FlutterPlugin, ActivityAware, MethodC
             result.success(true);
         } else if (method.equals("installApk")) {
             String filePath = call.argument("apkPath");
+            String installerPackageName = call.argument("installerPackageName");
             if (!TextUtils.isEmpty(filePath)) {
                 installProcess(new File(filePath), result);
+                if (!TextUtils.isEmpty(installerPackageName)) {
+                    setInstallerPackageName(applicationContext.getApplicationContext(), filePath, installerPackageName);
+                }
             } else {
                 result.error("installApk", "apkPath is null", null);
             }
@@ -193,6 +199,16 @@ public class AppInstallerPlugin implements FlutterPlugin, ActivityAware, MethodC
         }
         this.apkFile = null;
         this.result = null;
+    }
+
+    private void setInstallerPackageName(Context context, String apkFilePath, String installerPackage) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            Method method = pm.getClass().getMethod("setInstallerPackageName", String.class, String.class);
+            method.invoke(pm, apkFilePath, installerPackage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
