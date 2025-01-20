@@ -1,3 +1,18 @@
+## 1.3.1
+* 修复 Android 上过时的 API [#10](https://github.com/BytesZero/app_installer/issues/10), 感谢 @2000calories @Tindtily 
+
+## 1.3.0
+* 增加 MacOS 支持
+* 支持应用内评分，不需要跳出 App
+
+## 1.2.1
+* 适配 Android Gradle namespace [#15](https://github.com/BytesZero/app_installer/issues/15)
+* 适配最新 Flutter 版本
+
+## 1.2.0
+* 修复 Android resource linking failed [#14](https://github.com/BytesZero/app_installer/issues/14)
+* 适配最新 Flutter 版本
+
 ## 1.1.0
 
 * Fix the issue that the application restarts after permission is allowed on Android 11 [#5], thanks @yingzhong27
@@ -22,7 +37,7 @@
 
 ## 0.2.0
 
-* 修复 Android 崩溃 [#2](https://github.com/yy1300326388/app_installer/issues/2)
+* 修复 Android 崩溃 [#2](https://github.com/BytesZero/app_installer/issues/2)
 
 ## 0.1.0
 

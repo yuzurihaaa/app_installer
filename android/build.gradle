@@ -22,10 +22,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    namespace = "com.zero.app_installer"
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 16
+        minSdk 16
     }
     lintOptions {
         disable 'InvalidPackage'

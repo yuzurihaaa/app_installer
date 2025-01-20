@@ -1,4 +1,5 @@
 #import "AppInstallerPlugin.h"
+#import <StoreKit/StoreKit.h>
 
 @implementation AppInstallerPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -15,21 +16,15 @@
     if (!appId.length) {
         result([FlutterError errorWithCode:@"ERROR" message:@"Invalid app id" details:nil]);
     } else {
-        NSString* iTunesLink;
-        //根据系统判断打开方式
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 11) {
-            iTunesLink = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/xy/app/foo/id%@", appId];
+        if ([call.arguments[@"review"] boolValue]) {
+            [SKStoreReviewController requestReview];
+            result(nil);
         } else {
-            iTunesLink = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@", appId];
+            NSString* iTunesLink = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/xy/app/foo/id%@", appId];
+            //打开 App Store
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:nil];
+            result(nil);
         }
-        //如果是评价直接跳转到App Store 的评价页面
-        if([call.arguments[@"review"] boolValue]){
-            iTunesLink=[iTunesLink stringByAppendingString:@"?action=write-review"];
-        }
-        //打开 App Store
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
-
-        result(nil);
     }
   } else {
     result(FlutterMethodNotImplemented);

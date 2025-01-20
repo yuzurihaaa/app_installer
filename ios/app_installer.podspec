@@ -3,10 +3,10 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'app_installer'
-  s.version          = '1.1.0'
+  s.version          = '1.3.1'
   s.summary          = 'App Installer'
   s.description      = 'App Installer'
-  s.homepage         = 'https://github.com/yy1300326388/app_installer'
+  s.homepage         = 'https://github.com/BytesZero/app_installer'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Zero' => 'zhengsonglan001@gmail.com' }
   s.source           = { :path => '.' }
